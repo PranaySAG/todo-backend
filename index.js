@@ -25,7 +25,26 @@ app.get("/todos", (req, res) => {
     });
 });
 
+app.post("/todos", (req, res) => {
+    
+    const maxId = todos.length > 0 
+        ? Math.max(...todos.map(t => parseInt(t.id))) 
+        : 0;
+    const newId = maxId + 1;
 
+    const newItem = { 
+        id: newId, 
+        ...req.body,
+    }; 
+    
+    todos.push(newItem);
+    
+    res.status(201).json({
+        success: true,
+        data: newItem,
+        message: "Todo item added successfully"
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
