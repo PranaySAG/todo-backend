@@ -46,6 +46,26 @@ app.post("/todos", (req, res) => {
     });
 });
 
+app.delete("/todos/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const initialLength = todos.length;
+    
+    todos = todos.filter(item => item.id !== id);
+    
+    if (todos.length < initialLength) {
+        res.json({
+            success: true,
+            data: { id },
+            message: "Todo item deleted successfully"
+        });
+    } else {
+         res.status(404).json({
+            success: false,
+            message: "Todo item not found"
+        });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
