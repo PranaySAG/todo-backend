@@ -66,6 +66,30 @@ app.delete("/todos/:id", (req, res) => {
     }
 });
 
+app.patch("/todos/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+    const updates = req.body;
+    let updatedItem = null;
+    
+    const todoIndex = todos.findIndex(item => item.id === id);
+
+    if (todoIndex !== -1) {
+        updatedItem = { ...todos[todoIndex], ...updates };
+        todos[todoIndex] = updatedItem;
+
+        res.json({
+            success: true,
+            data: updatedItem,
+            message: "Todo item updated successfully"
+        });
+    } else {
+        res.status(404).json({
+            success: false,
+            message: "Todo item not found"
+        });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
